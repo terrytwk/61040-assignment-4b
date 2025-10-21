@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base tokens */
+@import './theme.css';
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--latte-accent);
+  outline-offset: 2px;
+}
+
+/* Specimen label */
+.label-specimen {
+  @apply uppercase tracking-wider text-xs text-fg/70;
+}
