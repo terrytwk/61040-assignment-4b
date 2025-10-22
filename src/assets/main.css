@@ -1,9 +1,9 @@
+/* Base tokens */
+@import './theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Base tokens */
-@import './theme.css';
 
 /* Focus ring */
 :focus-visible {
@@ -13,5 +13,14 @@
 
 /* Specimen label */
 .label-specimen {
-  @apply uppercase tracking-wider text-xs text-fg/70;
+  @apply uppercase tracking-wider text-xs text-latte-text-muted;
+}
+
+/* Hide scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
