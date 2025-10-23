@@ -122,7 +122,85 @@
 
 ---
 
-### POST /api/UserAuthentication/\_byUsername
+### POST /api/UserAuthentication/\_searchByKerb
+
+**Description:** Searches for users by partial username match (case-insensitive).
+
+**Requirements:**
+
+- true
+
+**Effects:**
+
+- returns users whose usernames contain the query string (case-insensitive)
+
+**Request Body:**
+
+```json
+{
+  "kerbQuery": "String"
+}
+```
+
+**Success Response Body (Query):**
+
+```json
+[
+  {
+    "user": "ID",
+    "username": "String"
+  }
+]
+```
+
+**Error Response Body:**
+
+```json
+{
+  "error": "string"
+}
+```
+
+---
+
+### POST /api/UserAuthentication/\_findByKerb
+
+**Description:** Finds exactly one user by exact username match (case-insensitive).
+
+**Requirements:**
+
+- true
+
+**Effects:**
+
+- returns exactly one user whose username exactly matches the query string (case-insensitive), or error if not found
+
+**Request Body:**
+
+```json
+{
+  "kerbQuery": "String"
+}
+```
+
+**Success Response Body (Query):**
+
+```json
+{
+  "user": "ID",
+  "username": "String"
+}
+```
+
+**Error Response Body:**
+
+```json
+{
+  "error": "String"
+}
+```
+
+---
 
 **Description:** Retrieves a user by their username.
 
@@ -188,7 +266,11 @@
 {
   "user": "ID",
   "name?": "String",
+  "classYear?": "String",
+  "major?": "String",
   "bio?": "String",
+  "favoriteDrink?": "String",
+  "favoriteCafe?": "String",
   "avatar?": "String"
 }
 ```
@@ -235,7 +317,11 @@
 [
   {
     "name": "String",
+    "classYear?": "String",
+    "major?": "String",
     "bio": "String",
+    "favoriteDrink?": "String",
+    "favoriteCafe?": "String",
     "avatar?": "String"
   }
 ]

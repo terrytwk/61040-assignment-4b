@@ -1,24 +1,26 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { LogOut } from 'lucide-vue-next'
+import { LogIn } from 'lucide-vue-next'
 
 const props = withDefaults(
   defineProps<{
     title?: string
-    showLogout?: boolean
+    showLogin?: boolean
   }>(),
   {
     title: 'Latte Lab',
-    showLogout: false,
+    showLogin: false,
   },
 )
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-const handleLogout = () => {
-  authStore.logout()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
+
+const handleLogin = () => {
   router.push('/login')
 }
 </script>
@@ -31,12 +33,12 @@ const handleLogout = () => {
     <div class="flex items-center gap-4">
       <slot name="right" />
       <button
-        v-if="showLogout"
-        @click="handleLogout"
-        class="flex items-center gap-2 px-3 py-2 text-sm text-latte-text-muted hover:text-latte-fg transition-colors"
+        v-if="showLogin && !isAuthenticated"
+        @click="handleLogin"
+        class="flex items-center gap-2 px-3 py-2 text-sm text-latte-accent hover:text-latte-accent/80 transition-colors"
       >
-        <LogOut class="w-4 h-4" />
-        Logout
+        <LogIn class="w-4 h-4" />
+        Login
       </button>
     </div>
   </header>

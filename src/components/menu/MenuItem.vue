@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MenuItem } from '@/types/menu'
+import type { MenuItemWithOptions } from '@/types/menu'
 
 const props = defineProps<{
-  item: MenuItem
+  item: MenuItemWithOptions
 }>()
 </script>
 
@@ -15,9 +15,13 @@ const props = defineProps<{
     </div>
 
     <!-- Options -->
-    <div class="flex flex-wrap gap-1">
-      <span v-for="option in item.options" :key="option" class="text-xs text-latte-text-muted">
-        {{ option }}
+    <div class="flex flex-col gap-1">
+      <span
+        v-for="option in item.options"
+        :key="option.id"
+        class="text-xs text-latte-text-muted block"
+      >
+        {{ option.name }}: {{ option.choices.map((c) => c.name).join(', ') }}
       </span>
     </div>
   </div>

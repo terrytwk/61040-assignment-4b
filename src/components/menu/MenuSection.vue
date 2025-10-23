@@ -7,7 +7,7 @@ import Skeleton from '@/components/ui/Skeleton.vue'
 const menuStore = useMenuStore()
 
 onMounted(() => {
-  menuStore.loadMockMenu()
+  menuStore.loadMenuItems()
 })
 </script>
 
@@ -17,7 +17,7 @@ onMounted(() => {
       <Skeleton :lines="3" />
     </div>
     <div v-else class="space-y-1">
-      <MenuItem v-for="item in menuStore.categories[0]?.items || []" :key="item.id" :item="item" />
+      <MenuItem v-for="item in menuStore.itemsWithOptions" :key="item.id" :item="item" />
     </div>
   </div>
 </template>
