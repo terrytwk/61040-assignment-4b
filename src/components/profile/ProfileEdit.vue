@@ -113,7 +113,7 @@ const cancelEditing = () => {
         </label>
         <input
           id="preferredDrink"
-          v-model="profileStore.preferredDrink"
+          v-model="profileStore.favoriteDrink"
           type="text"
           class="h-12 rounded-xl border-latte-border focus:ring-2 focus:ring-latte-accent w-full"
           @keydown="handleKeydown"

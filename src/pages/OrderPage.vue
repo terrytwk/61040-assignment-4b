@@ -56,6 +56,18 @@ const switchTab = (tab: 'qr' | 'form') => {
   drinkSelections.value = {}
 }
 
+const goBackToKerb = () => {
+  // Return to the search tab and clear current selection
+  activeTab.value = 'form'
+  showUserCard.value = false
+  showPOS.value = false
+  selectedUser.value = null
+  selectedDrink.value = ''
+  showDrinkOptions.value = false
+  currentDrink.value = null
+  drinkSelections.value = {}
+}
+
 const handleUserSelect = async (user: { user: string; username: string }) => {
   selectedUser.value = user
   try {
