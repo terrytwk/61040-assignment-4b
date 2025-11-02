@@ -7,7 +7,8 @@ import axios, {
 // Create axios instance with default configuration
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api', // Use proxy in development
-  timeout: 10000, // 10 seconds timeout
+  // Deployed on free tier on Render, where first request often takes 50+seconds. Ideally, set to 10 seconds
+  timeout: 100000, // 100 seconds timeout
   headers: {
     'Content-Type': 'application/json',
   },
