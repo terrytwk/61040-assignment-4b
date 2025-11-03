@@ -43,6 +43,14 @@ const handleLogin = () => {
   router.push('/login')
 }
 
+const goToUsers = () => {
+  router.push('/users')
+}
+
+const goToFeedback = () => {
+  router.push('/feedback')
+}
+
 // Watch for authentication changes and load profile
 watch(
   () => authStore.isAuthenticated,
@@ -119,6 +127,40 @@ onMounted(() => {
         <EventList />
       </section>
 
+      <!-- Community CTA -->
+      <div class="mb-8" v-if="isAuthenticated">
+        <Card class="p-6 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-latte-fg mb-1">Meet Coffee Drinkers</h3>
+            <p class="text-sm text-latte-text-muted">See members and their favorite drinks.</p>
+          </div>
+          <button
+            @click="goToUsers"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-latte-accent text-white rounded-lg font-medium hover:bg-latte-accent/90 transition-colors"
+          >
+            Explore
+            <ArrowRight class="w-4 h-4" />
+          </button>
+        </Card>
+      </div>
+
+      <!-- Feedback CTA -->
+      <div class="mb-8" v-if="isAuthenticated">
+        <Card class="p-6 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-latte-fg mb-1">Give Feedback</h3>
+            <p class="text-sm text-latte-text-muted">Help us improve your cafe experience.</p>
+          </div>
+          <button
+            @click="goToFeedback"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-latte-accent text-white rounded-lg font-medium hover:bg-latte-accent/90 transition-colors"
+          >
+            Share
+            <ArrowRight class="w-4 h-4" />
+          </button>
+        </Card>
+      </div>
+
       <!-- Menu Section -->
       <section class="mb-8">
         <h2 class="text-xl font-display font-semibold text-latte-fg mb-4">Cafe Menu</h2>
@@ -127,7 +169,9 @@ onMounted(() => {
     </main>
 
     <!-- Floating QR Button - Only show for authenticated users -->
-    <FloatingQRButton v-if="isAuthenticated" @click="app.openQR()" />
+    <teleport to="body">
+      <FloatingQRButton v-if="isAuthenticated" @click="app.openQR()" />
+    </teleport>
 
     <!-- QR Modal - Only show for authenticated users -->
     <Modal

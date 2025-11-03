@@ -241,6 +241,30 @@ export const userProfileApi = {
   getProfile: (userId: string) => {
     return api.post('/UserProfile/_profile', { user: userId })
   },
+  // Get all user profiles
+  getAllProfiles: () => {
+    return api.post('/UserProfile/_allProfiles', {})
+  },
+}
+
+// CustomerFeedback API methods
+export const feedbackApi = {
+  // Create feedback for a completed order
+  create: (userId: string, orderId: string, comment: string) => {
+    return api.post('/CustomerFeedback/create', {
+      user: userId,
+      order: orderId,
+      comment,
+    })
+  },
+  // Get feedback for a specific order
+  forOrder: (orderId: string) => {
+    return api.post('/CustomerFeedback/_forOrder', { order: orderId })
+  },
+  // Get feedback left by a specific user
+  forUser: (userId: string) => {
+    return api.post('/CustomerFeedback/_forUser', { user: userId })
+  },
 }
 
 // Export individual functions for easier imports
@@ -268,10 +292,16 @@ export const {
   // Profile API
   setProfile,
   getProfile,
+  getAllProfiles,
+  // Feedback API
+  create: createFeedback,
+  forOrder: getFeedbackForOrder,
+  forUser: getFeedbackForUser,
 } = {
   ...menuApi,
   ...orderApi,
   ...authApi,
+  ...feedbackApi,
   ...userProfileApi,
 }
 

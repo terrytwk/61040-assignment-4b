@@ -4,11 +4,8 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ## Demo Videos
 
-- **Customer Demo:**  
-  [latteapp-demo-customer.mov](./@latteapp-demo-customer.mov)
-
-- **Barista Demo:**  
-  [lattelab-demo-barista.mov](./@lattelab-demo-barista.mov)
+- **Demo:**  
+  [latteapp-demo.mov](./@latteapp-demo.mov)
 
 ## Recommended IDE Setup
 

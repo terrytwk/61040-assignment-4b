@@ -16,7 +16,7 @@ const isActive = (path: string) => computed(() => route.path === path)
 
 <template>
   <nav
-    class="fixed bottom-0 inset-x-0 bg-latte-card border-t border-latte-border h-16 flex justify-around"
+    class="fixed bottom-0 inset-x-0 bg-latte-card border-t border-latte-border h-16 flex justify-around z-40"
   >
     <router-link
       v-for="item in navItems"

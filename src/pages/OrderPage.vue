@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import TopBar from '@/components/layout/TopBar.vue'
 import Card from '@/components/ui/Card.vue'
@@ -32,6 +32,11 @@ const drinkSelections = ref<Record<string, string>>({})
 const orderSubmitted = ref(false)
 const submittingOrder = ref(false)
 
+// Camera state
+const isCameraOpen = ref(false)
+const videoRef = ref<HTMLVideoElement | null>(null)
+const mediaStream = ref<MediaStream | null>(null)
+
 // Initialize stores and composables
 const menuStore = useMenuStore()
 const orderStore = useOrderStore()
@@ -54,6 +59,7 @@ const switchTab = (tab: 'qr' | 'form') => {
   showDrinkOptions.value = false
   currentDrink.value = null
   drinkSelections.value = {}
+  closeCamera()
 }
 
 const goBackToKerb = () => {
@@ -66,6 +72,7 @@ const goBackToKerb = () => {
   showDrinkOptions.value = false
   currentDrink.value = null
   drinkSelections.value = {}
+  closeCamera()
 }
 
 const handleUserSelect = async (user: { user: string; username: string }) => {
@@ -205,6 +212,71 @@ const submitOrder = async () => {
   }
 }
 
+// Camera controls
+// Cross-browser getUserMedia helper with Safari fallback
+const getCameraStream = async (): Promise<MediaStream> => {
+  const constraints: MediaStreamConstraints = {
+    video: { facingMode: { ideal: 'environment' } as any },
+    audio: false,
+  }
+
+  // Modern API
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    return navigator.mediaDevices.getUserMedia(constraints)
+  }
+
+  // Legacy Safari/WebKit fallbacks
+  const anyNavigator = navigator as any
+  const legacyGetUserMedia =
+    anyNavigator.getUserMedia ||
+    anyNavigator.webkitGetUserMedia ||
+    anyNavigator.mozGetUserMedia ||
+    anyNavigator.msGetUserMedia
+
+  if (legacyGetUserMedia) {
+    return new Promise<MediaStream>((resolve, reject) => {
+      legacyGetUserMedia.call(navigator, constraints, resolve, reject)
+    })
+  }
+
+  throw new Error('Camera API is not supported in this browser')
+}
+
+const openCamera = async () => {
+  try {
+    const stream = await getCameraStream()
+    mediaStream.value = stream
+    if (videoRef.value) {
+      videoRef.value.srcObject = stream
+      // Ensure inline playback on iOS Safari
+      ;(videoRef.value as any).playsInline = true
+      videoRef.value.muted = true
+      await videoRef.value.play()
+    }
+    isCameraOpen.value = true
+  } catch (err) {
+    console.error('Failed to open camera:', err)
+    // Provide clearer guidance for Safari/insecure context cases
+    const message = err instanceof Error ? err.message : 'Unable to access camera'
+    error('Camera access error', message)
+  }
+}
+
+const closeCamera = () => {
+  if (mediaStream.value) {
+    mediaStream.value.getTracks().forEach((track) => track.stop())
+    mediaStream.value = null
+  }
+  if (videoRef.value) {
+    videoRef.value.srcObject = null
+  }
+  isCameraOpen.value = false
+}
+
+onBeforeUnmount(() => {
+  closeCamera()
+})
+
 // Watch for changes in drink selections to update selected drink automatically
 watch(
   drinkSelections,
@@ -274,7 +346,28 @@ watch(
             <p class="text-latte-text-muted">
               Point camera at customer's QR code to find their order
             </p>
+
+            <!-- Camera preview -->
+            <div v-if="isCameraOpen" class="space-y-3">
+              <video
+                ref="videoRef"
+                autoplay
+                playsinline
+                muted
+                class="w-full rounded-lg border border-latte-border bg-black"
+              ></video>
+              <button
+                @click="closeCamera"
+                class="inline-flex items-center justify-center rounded-xl h-12 px-6 font-semibold bg-latte-muted text-latte-text-muted hover:text-latte-fg active:scale-95 transition-transform"
+              >
+                Close Camera
+              </button>
+            </div>
+
+            <!-- Open camera button -->
             <button
+              v-else
+              @click="openCamera"
               class="inline-flex items-center justify-center rounded-xl h-12 px-6 font-semibold bg-latte-accent text-white active:scale-95 transition-transform"
             >
               Open Camera

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import BottomNav from '@/components/layout/BottomNav.vue'
+import Toast from '@/components/ui/Toast.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
@@ -16,5 +17,10 @@ const shouldShowBottomNav = computed(() => {
 
 <template>
   <RouterView />
-  <BottomNav v-if="shouldShowBottomNav" />
+  <teleport to="body">
+    <BottomNav v-if="shouldShowBottomNav" />
+  </teleport>
+  <teleport to="body">
+    <Toast />
+  </teleport>
 </template>

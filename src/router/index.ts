@@ -4,6 +4,8 @@ import ProfilePage from '@/pages/ProfilePage.vue'
 import OrderPage from '@/pages/OrderPage.vue'
 import OrderDashboardPage from '@/pages/OrderDashboardPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
+import UsersPage from '@/pages/UsersPage.vue'
+import FeedbackPage from '@/pages/FeedbackPage.vue'
 import { setupAuthGuards } from './guards'
 
 const routes = [
@@ -29,6 +31,18 @@ const routes = [
     path: '/order-dashboard',
     name: 'OrderDashboard',
     component: OrderDashboardPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: UsersPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/feedback',
+    name: 'Feedback',
+    component: FeedbackPage,
     meta: { requiresAuth: true },
   },
   {

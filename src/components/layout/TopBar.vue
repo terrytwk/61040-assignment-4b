@@ -29,7 +29,10 @@ const handleLogin = () => {
   <header
     class="sticky top-0 z-20 bg-latte-bg/80 backdrop-blur border-b border-latte-border h-14 px-4 flex items-center justify-between"
   >
-    <h1 class="text-xl font-semibold text-latte-fg">{{ title }}</h1>
+    <div class="flex items-center gap-2">
+      <slot name="left" />
+      <h1 class="text-xl font-semibold text-latte-fg">{{ title }}</h1>
+    </div>
     <div class="flex items-center gap-4">
       <slot name="right" />
       <button
